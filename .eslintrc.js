@@ -20,5 +20,5 @@ module.exports = {
     "prettier",
   ],
   ignorePatterns: ["dist/*.js"],
-  rules: {},
+  rules: { "@typescript-eslint/no-misused-promises": "off" },
 };
