@@ -14,3 +14,8 @@ model Todo {
   id        Int      @default(autoincrement()) @id
   title     String   @db.VarChar(255)
 }
+
+model User {
+  id        Int      @default(autoincrement()) @id
+  email     String   @db.VarChar(255)
+}
