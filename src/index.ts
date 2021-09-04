@@ -1,6 +1,7 @@
 import express from "express";
 import { hello } from "./hello";
 import { PrismaClient } from "@prisma/client";
+import { userRouter } from "./user/http";
 
 const prisma = new PrismaClient();
 
@@ -26,6 +27,8 @@ router.get("/api/todos", async (_: express.Request, res: express.Response) => {
   const todos = await prisma.todo.findMany();
   res.send({ todos });
 });
+
+router.use("/api/users", userRouter);
 
 app.use(router);
 
