@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { UsersQueryDto } from "../domain/query/UsersQueryDto";
 import { User } from "../domain/User";
 import { UserEmail } from "../domain/UserEmail";
@@ -8,9 +9,16 @@ import { IUserRepository } from "./IUserRepository";
 type UserRow = { id: number; email: string };
 type UsersRow = UserRow[];
 
-type UserModel = {
-  findMany(): Promise<{ id: number; email: string }[]>;
-};
+// type UserModel2 = {
+//   findMany(): Promise<{ id: number; email: string }[]>;
+//   create({ data: { email } }: { data: { email: string } }): Promise<void>;
+// };
+
+type UserModel = Prisma.UserDelegate<
+  Prisma.PrismaClientOptions["rejectOnNotFound"]
+>;
+
+// type UserModel = Prisma.UserDelegate<false>;
 
 export class UserRepository implements IUserRepository {
   constructor(private readonly model: UserModel) {}
@@ -23,6 +31,16 @@ export class UserRepository implements IUserRepository {
   async getAllQueryDto(): Promise<UsersQueryDto> {
     const usersRow = await this.model.findMany();
     return usersRow;
+  }
+
+  async save(user: User): Promise<User> {
+    if (user.isNewUser()) {
+      const { id } = await this.model.create({ data: { email: user.email } });
+      const userId = UserId.create(id);
+      return user.setUserId(userId);
+    }
+
+    return user;
   }
 
   private transformUsersRowToDomain(usersRow: UsersRow): Users {

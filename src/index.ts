@@ -25,6 +25,8 @@ router.get("/api/test", (req: express.Request, res: express.Response) => {
 });
 router.get("/api/todos", async (_: express.Request, res: express.Response) => {
   const todos = await prisma.todo.findMany();
+
+  // const user = await prisma.user.create({ data: { email: "aaa" } });
   res.send({ todos });
 });
 
