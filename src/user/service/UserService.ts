@@ -20,8 +20,13 @@ export class UserService implements IUserService {
     return users;
   }
 
-  async createUser(dto: CreateUserDto): Promise<User> {
-    const email = UserEmail.create(dto.email);
+  async createUser(dto: CreateUserDto): Promise<User | Error> {
+    let email: UserEmail;
+    try {
+      email = UserEmail.create(dto.email);
+    } catch (e) {
+      return new Error("error: email error");
+    }
     const newUserId = NewUserId.create();
 
     const user = User.create(newUserId, email);

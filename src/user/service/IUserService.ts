@@ -6,5 +6,5 @@ import { Users } from "../domain/Users";
 export interface IUserService {
   getAll(): Promise<Users>;
   getAllCQRS(): Promise<UsersQueryDto>;
-  createUser(dto: CreateUserDto): Promise<User>;
+  createUser(dto: CreateUserDto): Promise<User | Error>;
 }
