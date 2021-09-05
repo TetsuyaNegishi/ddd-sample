@@ -1,3 +1,4 @@
+import { UsersQueryDto } from "../domain/query/UsersQueryDto";
 import { User } from "../domain/User";
 import { UserEmail } from "../domain/UserEmail";
 import { UserId } from "../domain/UserId";
@@ -17,6 +18,11 @@ export class UserRepository implements IUserRepository {
     const usersRow = await this.model.findMany();
     const users = this.transformUsersRowToDomain(usersRow);
     return users;
+  }
+
+  async getAllQueryDto(): Promise<UsersQueryDto> {
+    const usersRow = await this.model.findMany();
+    return usersRow;
   }
 
   private transformUsersRowToDomain(usersRow: UsersRow): Users {
